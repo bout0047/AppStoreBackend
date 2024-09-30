@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppStoreBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240930104510_AddCategoriesTable")]
-    partial class AddCategoriesTable
+    [Migration("20240930141438_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,11 +62,11 @@ namespace AppStoreBackend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
+                    b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("IconPath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
