@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using AppStoreBackend.Data;
 using AppStoreBackend.Models;
 using System.Linq;
-using AppStoreBackend.Data;
 
 namespace AppStoreBackend.Controllers
 {

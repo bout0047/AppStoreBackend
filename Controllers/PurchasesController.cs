@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using AppStoreBackend.Data; // Correct namespace for AppDbContext
 using AppStoreBackend.Models;
 using System.Linq;
 

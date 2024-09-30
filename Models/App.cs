@@ -7,7 +7,6 @@
         public string Description { get; set; } = string.Empty;
         public int CategoryId { get; set; }
         public double Rating { get; set; }
-        public decimal Price { get; set; }
-        public bool IsPopular { get; set; } = false;  // Added IsPopular property
+        public decimal Price { get; set; } // Add a decimal property for Price
     }
 }
