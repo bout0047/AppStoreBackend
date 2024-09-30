@@ -4,7 +4,7 @@ namespace AppStoreBackend.Data.Factories
 {
     public static class AppFactory
     {
-        public static App CreateApp(int categoryId, string name, string description, decimal price)
+        public static App Create(string name, string description, decimal price, int categoryId)
         {
             return new App
             {

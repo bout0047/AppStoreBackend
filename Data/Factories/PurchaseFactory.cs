@@ -4,13 +4,13 @@ namespace AppStoreBackend.Data.Factories
 {
     public static class PurchaseFactory
     {
-        public static Purchase CreatePurchase(int userId, int appId, DateTime purchaseDate)
+        public static Purchase Create(int userId, int appId)
         {
             return new Purchase
             {
                 UserId = userId,
                 AppId = appId,
-                PurchaseDate = purchaseDate
+                PurchaseDate = DateTime.UtcNow
             };
         }
     }

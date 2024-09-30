@@ -5,8 +5,9 @@ namespace AppStoreBackend.Models
     public class Category
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty; // Ensure Name property exists
-        public string Description { get; set; } = string.Empty; // Ensure Description property exists
-        public ICollection<App> Apps { get; set; } = new List<App>(); // Navigation property
+        public string CategoryName { get; set; } = string.Empty; // Ensure non-null value
+        public string IconPath { get; set; } = string.Empty; // Ensure non-null value
+
+        public ICollection<App> Apps { get; set; } = new List<App>(); // Initialize collection
     }
 }

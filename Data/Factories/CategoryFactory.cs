@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
-using AppStoreBackend.Models;
+﻿using AppStoreBackend.Models;
 
 namespace AppStoreBackend.Data.Factories
 {
     public static class CategoryFactory
     {
-        public static List<Category> CreateCategories()
+        public static Category Create(string categoryName, string iconPath)
         {
-            return new List<Category>
+            return new Category
             {
-                new Category { Name = "Games", Description = "All kinds of games" },
-                new Category { Name = "Music", Description = "Music apps and tools" }
+                CategoryName = categoryName,
+                IconPath = iconPath
             };
         }
     }
