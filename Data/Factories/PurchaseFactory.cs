@@ -9,8 +9,7 @@ namespace AppStoreBackend.Data.Factories
             return new Purchase
             {
                 UserId = userId,
-                AppId = appId,
-                PurchaseDate = DateTime.UtcNow
+                AppId = appId
             };
         }
     }

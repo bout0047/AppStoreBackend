@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AppStoreBackend.Data; // Correct namespace for AppDbContext
+using AppStoreBackend.DTOs; // Ensure this is added
+using AppStoreBackend.Data;
 using AppStoreBackend.Models;
-using System.Linq;
 
 namespace AppStoreBackend.Controllers
 {
@@ -17,9 +17,17 @@ namespace AppStoreBackend.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllPurchases()
+        public ActionResult<List<PurchaseDTO>> GetPurchases()
         {
-            var purchases = _context.Purchases.ToList();
+            var purchases = _context.Purchases.Select(p => new PurchaseDTO
+            {
+                Id = p.Id,
+                UserId = p.UserId,
+                AppId = p.AppId,
+                PurchaseDate = p.PurchaseDate,
+                Price = p.Price
+            }).ToList();
+
             return Ok(purchases);
         }
     }

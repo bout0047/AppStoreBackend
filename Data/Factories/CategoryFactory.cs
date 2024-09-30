@@ -4,11 +4,11 @@ namespace AppStoreBackend.Data.Factories
 {
     public static class CategoryFactory
     {
-        public static Category Create(string categoryName, string iconPath)
+        public static Category Create(string name, string iconPath)
         {
             return new Category
             {
-                CategoryName = categoryName,
+                CategoryName = name,
                 IconPath = iconPath
             };
         }
