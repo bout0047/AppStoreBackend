@@ -2,9 +2,9 @@
 {
     public class Purchase
     {
-        public int PurchaseID { get; set; }
-        public int UserID { get; set; }
-        public int AppID { get; set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int AppId { get; set; }
         public DateTime PurchaseDate { get; set; }
     }
 }

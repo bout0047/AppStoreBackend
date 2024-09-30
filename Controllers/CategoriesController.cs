@@ -7,20 +7,20 @@ namespace AppStoreBackend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public UsersController(AppDbContext context)
+        public CategoriesController(AppDbContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public IActionResult GetAllUsers()
+        public IActionResult GetAllCategories()
         {
-            var users = _context.Users.ToList();
-            return Ok(users);
+            var categories = _context.Categories.ToList();
+            return Ok(categories);
         }
     }
 }

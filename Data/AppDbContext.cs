@@ -1,26 +1,28 @@
-﻿using Microsoft.EntityFrameworkCore;
-using AppStoreBackend.Models;
+﻿using AppStoreBackend.Models;
+using System.Linq;
 
 namespace AppStoreBackend.Data
 {
-    public class AppDbContext : DbContext
+    public static class AppDbContextSeeder
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
-        public DbSet<App> Apps { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Purchase> Purchases { get; set; }
-        public DbSet<Category> Categories { get; set; }  // Add this DbSet
-        
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public static void Seed(AppDbContext context)
         {
-            // Configure precision for Price in App
-            modelBuilder.Entity<App>()
-                .Property(a => a.Price)
-                .HasColumnType("decimal(18, 2)");
+            if (!context.Users.Any())
+            {
+                context.Users.AddRange(UserFactory.CreateUsers());
+            }
 
-            base.OnModelCreating(modelBuilder);
+            if (!context.Categories.Any())
+            {
+                context.Categories.AddRange(CategoryFactory.CreateCategories());
+            }
+
+            if (!context.Purchases.Any())
+            {
+                context.Purchases.AddRange(PurchaseFactory.CreatePurchases());
+            }
+
+            context.SaveChanges();
         }
     }
 }
