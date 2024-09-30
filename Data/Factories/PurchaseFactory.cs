@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
-using AppStoreBackend.Models;
+﻿using AppStoreBackend.Models;
 
-namespace AppStoreBackend.Data.Factories // Corrected namespace
+namespace AppStoreBackend.Data.Factories
 {
     public static class PurchaseFactory
     {
-        public static List<Purchase> CreatePurchases()
+        public static Purchase CreatePurchase(int userId, int appId, DateTime purchaseDate)
         {
-            return new List<Purchase>
+            return new Purchase
             {
-                new Purchase { UserId = 1, AppId = 1, PurchaseDate = System.DateTime.Now },
-                new Purchase { UserId = 2, AppId = 2, PurchaseDate = System.DateTime.Now }
+                UserId = userId,
+                AppId = appId,
+                PurchaseDate = purchaseDate
             };
         }
     }

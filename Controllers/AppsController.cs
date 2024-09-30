@@ -1,22 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AppStoreBackend.Data;
+using AppStoreBackend.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AppStoreBackend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")] // This maps the controller to "api/app"
-    public class AppController : ControllerBase
+    [Route("api/[controller]")]
+    public class AppsController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetAllApps()
-        {
-            var apps = new List<object>
-            {
-                new { Id = 1, Name = "Sample App 1", Description = "This is a sample app" },
-                new { Id = 2, Name = "Sample App 2", Description = "This is another sample app" }
-            };
+        private readonly AppDbContext _context;
 
-            return Ok(apps); // Returns the list of apps
+        public AppsController(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<App>>> GetApps()
+        {
+            return await _context.Apps.Include(a => a.Category).ToListAsync();
         }
     }
 }

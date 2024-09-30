@@ -4,6 +4,7 @@ using AppStoreBackend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppStoreBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240930095737_InitialCreate22")]
+    partial class InitialCreate22
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,6 +40,9 @@ namespace AppStoreBackend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsPopular")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -44,9 +50,10 @@ namespace AppStoreBackend.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("Id");
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
 
-                    b.HasIndex("CategoryId");
+                    b.HasKey("Id");
 
                     b.ToTable("Apps");
                 });
@@ -91,10 +98,6 @@ namespace AppStoreBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppId");
-
-                    b.HasIndex("UserId");
-
                     b.ToTable("Purchases");
                 });
 
@@ -121,51 +124,6 @@ namespace AppStoreBackend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("AppStoreBackend.Models.App", b =>
-                {
-                    b.HasOne("AppStoreBackend.Models.Category", "Category")
-                        .WithMany("Apps")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("AppStoreBackend.Models.Purchase", b =>
-                {
-                    b.HasOne("AppStoreBackend.Models.App", "App")
-                        .WithMany("Purchases")
-                        .HasForeignKey("AppId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppStoreBackend.Models.User", "User")
-                        .WithMany("Purchases")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("App");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("AppStoreBackend.Models.App", b =>
-                {
-                    b.Navigation("Purchases");
-                });
-
-            modelBuilder.Entity("AppStoreBackend.Models.Category", b =>
-                {
-                    b.Navigation("Apps");
-                });
-
-            modelBuilder.Entity("AppStoreBackend.Models.User", b =>
-                {
-                    b.Navigation("Purchases");
                 });
 #pragma warning restore 612, 618
         }
