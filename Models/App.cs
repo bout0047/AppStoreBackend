@@ -2,16 +2,12 @@
 {
     public class App
     {
-        public class App
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public string Description { get; set; }
-            public int CategoryId { get; set; }
-            public double Rating { get; set; }
-            // Include other properties as needed
-        }
-
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public int CategoryId { get; set; }
+        public double Rating { get; set; }
+        public decimal Price { get; set; }
+        public bool IsPopular { get; set; } = false;  // Added IsPopular property
     }
-
 }

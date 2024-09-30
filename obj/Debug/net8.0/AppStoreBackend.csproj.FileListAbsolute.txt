@@ -135,3 +135,4 @@ C:\Users\ilyas\source\repos\AppStoreBackend\AppStoreBackend\obj\Debug\net8.0\App
 C:\Users\ilyas\source\repos\AppStoreBackend\AppStoreBackend\obj\Debug\net8.0\AppStoreBackend.genruntimeconfig.cache
 C:\Users\ilyas\source\repos\AppStoreBackend\AppStoreBackend\obj\Debug\net8.0\ref\AppStoreBackend.dll
 C:\Users\ilyas\source\repos\AppStoreBackend\AppStoreBackend\bin\Debug\net8.0\Bogus.dll
+C:\Users\ilyas\source\repos\AppStoreBackend\AppStoreBackend\obj\Debug\net8.0\AppStoreBackend.sourcelink.json
