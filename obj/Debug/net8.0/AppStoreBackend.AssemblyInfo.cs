@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AppStoreBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5a233b8b404838f740b118e8b519237e3c5da3a2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+411e0f5c5e864080ef5e527fd9c030f5be1738b6")]
 [assembly: System.Reflection.AssemblyProductAttribute("AppStoreBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AppStoreBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

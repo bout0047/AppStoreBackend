@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using AppStoreBackend.Data;
 using AppStoreBackend.Models;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AppStoreBackend.Controllers
 {
@@ -20,8 +19,7 @@ namespace AppStoreBackend.Controllers
         [HttpGet]
         public IActionResult GetApps()
         {
-            // Correcting the type reference here
-            List<App> apps = _context.Apps.ToList(); // Change ApplicationData to App if incorrect
+            var apps = _context.Apps.Include(a => a.Category).ToList();
             return Ok(apps);
         }
     }
