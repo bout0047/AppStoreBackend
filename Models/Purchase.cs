@@ -1,18 +1,17 @@
 ﻿using System;
+using AppStoreBackend.Data; // Reference to ApplicationData if needed
 
 namespace AppStoreBackend.Models
 {
     public class Purchase
     {
         public int Id { get; set; }
-        public DateTime PurchaseDate { get; set; }
-        public decimal Price { get; set; }
-
-        // Foreign key reference to User and App
+        public User User { get; set; } = new User(); // Initialized to avoid null warnings
         public int UserId { get; set; }
-        public User User { get; set; } = null!;
-
+        public ApplicationData App { get; set; } = new ApplicationData(); // Initialized to avoid null warnings
         public int AppId { get; set; }
-        public App App { get; set; } = null!;
+        public DateTime PurchaseDate { get; set; } = DateTime.Now;
+        public decimal Price { get; set; }
+        public string PaymentMethod { get; set; } = string.Empty;
     }
 }

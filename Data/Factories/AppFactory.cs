@@ -1,17 +1,16 @@
-﻿using AppStoreBackend.Models;
+﻿using AppStoreBackend.Models; // Assuming Category is defined in Models
 
 namespace AppStoreBackend.Data.Factories
 {
     public static class AppFactory
     {
-        public static App Create(string name, string description, decimal price, int categoryId)
+        public static ApplicationData CreateApp(string name, string description, Category category)
         {
-            return new App
+            return new ApplicationData
             {
                 Name = name,
                 Description = description,
-                Price = price,
-                CategoryId = categoryId
+                Category = category
             };
         }
     }

@@ -2,7 +2,7 @@
 
 namespace AppStoreBackend.Models
 {
-    public class App
+    public class AppDetails
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;

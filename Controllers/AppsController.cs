@@ -1,9 +1,5 @@
-﻿using AppStoreBackend.Data;
-using AppStoreBackend.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using AppStoreBackend.Data; // To use AppDbContext and ApplicationData
 
 namespace AppStoreBackend.Controllers
 {
@@ -19,9 +15,11 @@ namespace AppStoreBackend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<App>>> GetApps()
+        public IActionResult GetApps()
         {
-            return await _context.Apps.Include(a => a.Category).ToListAsync();
+            // Updated type to 'ApplicationData' after renaming
+            List<ApplicationData> apps = _context.Apps.ToList();
+            return Ok(apps);
         }
     }
 }

@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
-using AppStoreBackend.Models;
+﻿using AppStoreBackend.Models;
 
 namespace AppStoreBackend.Data.Factories
 {
     public static class UserFactory
     {
-        public static List<User> CreateUsers()
+        public static User CreateUser(string username, string password, string email)
         {
-            return new List<User>
+            return new User
             {
-                new User { Username = "User1", Password = "password1", Email = "user1@example.com" },
-                new User { Username = "User2", Password = "password2", Email = "user2@example.com" }
+                Username = username,
+                Password = password,
+                Email = email
             };
         }
     }

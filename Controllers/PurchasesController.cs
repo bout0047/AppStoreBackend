@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PurchaseModel = AppStoreBackend.Models.Purchase; // Use alias to disambiguate
 using AppStoreBackend.Data;
-using AppStoreBackend.DTOs; // Add this using directive
-using AppStoreBackend.Models;
 
 namespace AppStoreBackend.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class PurchasesController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -16,24 +15,11 @@ namespace AppStoreBackend.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        public IActionResult CreatePurchase([FromBody] PurchaseDTO purchaseDTO)
+        [HttpGet]
+        public IActionResult GetPurchases()
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var purchase = new Purchase
-            {
-                UserId = purchaseDTO.UserId,
-                AppId = purchaseDTO.AppId,
-                Price = purchaseDTO.Price,
-                PurchaseDate = purchaseDTO.PurchaseDate
-            };
-
-            _context.Purchases.Add(purchase);
-            _context.SaveChanges();
-
-            return Ok(purchase);
+            List<PurchaseModel> purchases = _context.Purchases.ToList(); // Use alias 'PurchaseModel' to disambiguate
+            return Ok(purchases);
         }
     }
 }

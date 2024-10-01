@@ -1,7 +1,11 @@
-﻿public class CategoryDTO
+﻿using AppStoreBackend.Data;
+
+namespace AppStoreBackend.DTOs
 {
-    public int Id { get; set; }
-    public string CategoryName { get; set; }
-    public string IconPath { get; set; }
-    public ICollection<AppDTO> Apps { get; set; }
+    public class CategoryDTO
+    {
+        public string CategoryName { get; set; } = string.Empty; // Added default value
+        public string IconPath { get; set; } = string.Empty; // Added default value
+        public List<ApplicationData> Apps { get; set; } = new List<ApplicationData>(); // Added default value
+    }
 }
