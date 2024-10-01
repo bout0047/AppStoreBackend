@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PurchaseModel = AppStoreBackend.Models.Purchase; // Use alias to disambiguate
 using AppStoreBackend.Data;
+using AppStoreBackend.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AppStoreBackend.Controllers
 {
@@ -18,7 +20,7 @@ namespace AppStoreBackend.Controllers
         [HttpGet]
         public IActionResult GetPurchases()
         {
-            List<PurchaseModel> purchases = _context.Purchases.ToList(); // Use alias 'PurchaseModel' to disambiguate
+            List<Purchase> purchases = _context.Purchases.ToList();
             return Ok(purchases);
         }
     }

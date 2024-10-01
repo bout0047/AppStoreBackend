@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "w5ovhu6JSpAlsi47qO51Qii/fNhZ1cksmA8zhVHoJ2I=",
+  "Source": "AppStoreBackend",
+  "BasePath": "_content/AppStoreBackend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

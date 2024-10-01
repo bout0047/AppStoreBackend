@@ -1,35 +1,72 @@
-﻿using AppStoreBackend.Data;
-using AppStoreBackend.Models;
+﻿using AppStoreBackend.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace AppStoreBackend.Data.Seeders
 {
-    public class Seeder
+    public static class Seeder
     {
         public static void Seed(AppDbContext context)
         {
-            // Example seeding logic
             if (!context.Categories.Any())
             {
-                var category = new Category
+                var categories = new List<Category>
                 {
-                    CategoryName = "Games",
-                    IconPath = "/images/games.png"
+                    new Category
+                    {
+                        CategoryName = "Games",
+                        IconPath = "path/to/games/icon.png",
+                    },
+                    new Category
+                    {
+                        CategoryName = "Productivity",
+                        IconPath = "path/to/productivity/icon.png",
+                    }
                 };
-
-                context.Categories.Add(category);
+                context.Categories.AddRange(categories);
                 context.SaveChanges();
             }
 
-            if (!context.Apps.Any()) // Updated from context.Apps to context.Apps, which uses ApplicationData
+            if (!context.Apps.Any())
             {
-                var app = new ApplicationData
+                var apps = new List<App>
                 {
-                    Name = "Super Fun Game",
-                    Description = "An exciting game for all ages.",
-                    Category = context.Categories.First() // Assuming there's at least one category
+                    new App
+                    {
+                        Name = "Game One",
+                        Description = "An exciting game.",
+                        Category = context.Categories.First(c => c.CategoryName == "Games")
+                    },
+                    new App
+                    {
+                        Name = "Productivity App",
+                        Description = "Boost your productivity.",
+                        Category = context.Categories.First(c => c.CategoryName == "Productivity")
+                    }
                 };
+                context.Apps.AddRange(apps);
+                context.SaveChanges();
+            }
 
-                context.Apps.Add(app);
+            if (!context.Purchases.Any())
+            {
+                var user = context.Users.FirstOrDefault();
+                var app = context.Apps.FirstOrDefault();
+
+                var purchases = new List<Purchase>
+                {
+                    new Purchase
+                    {
+                        User = user,
+                        App = app
+                    },
+                    new Purchase
+                    {
+                        User = user,
+                        App = app
+                    }
+                };
+                context.Purchases.AddRange(purchases);
                 context.SaveChanges();
             }
         }

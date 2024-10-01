@@ -1,15 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using AppStoreBackend.Models; // Make sure this only appears once
+using AppStoreBackend.Models;
 
 namespace AppStoreBackend.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
 
-        public DbSet<ApplicationData> Apps { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<App> Apps { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Purchase> Purchases { get; set; }  // Correct reference to the Purchase class from Models
+        public DbSet<User> Users { get; set; }
+        public DbSet<Purchase> Purchases { get; set; } // Ensure Purchase is correctly included
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            // You can add model relationships and constraints here if needed
+        }
     }
 }

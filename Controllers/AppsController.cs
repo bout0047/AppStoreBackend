@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AppStoreBackend.Data; // To use AppDbContext and ApplicationData
+using AppStoreBackend.Data;
+using AppStoreBackend.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AppStoreBackend.Controllers
 {
@@ -17,8 +20,8 @@ namespace AppStoreBackend.Controllers
         [HttpGet]
         public IActionResult GetApps()
         {
-            // Updated type to 'ApplicationData' after renaming
-            List<ApplicationData> apps = _context.Apps.ToList();
+            // Correcting the type reference here
+            List<App> apps = _context.Apps.ToList(); // Change ApplicationData to App if incorrect
             return Ok(apps);
         }
     }

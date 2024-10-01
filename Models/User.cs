@@ -1,10 +1,15 @@
-﻿namespace AppStoreBackend.Models
+﻿using System.Collections.Generic;
+
+namespace AppStoreBackend.Models
 {
     public class User
     {
         public int Id { get; set; }
-        public string Username { get; set; } = string.Empty; // Added Username
-        public string Password { get; set; } = string.Empty; // Added Password
-        public string Email { get; set; } = string.Empty; // Added Email
+        public required string Username { get; set; }
+        public required string Password { get; set; }
+        public required string Email { get; set; }
+
+        // Collection of Purchases made by the User
+        public ICollection<Purchase> Purchases { get; set; } = new List<Purchase>();
     }
 }
