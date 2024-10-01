@@ -1,4 +1,5 @@
 ﻿using AppStoreBackend.Data;
+using AppStoreBackend.Models;
 
 namespace AppStoreBackend.Data.Seeders
 {

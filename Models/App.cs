@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using AppStoreBackend.Models;
 
 namespace AppStoreBackend.Models
+    
+
 {
     public class AppDetails
     {
