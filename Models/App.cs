@@ -1,17 +1,21 @@
-﻿namespace AppStoreBackend.Models
+﻿using System.Text.Json.Serialization;
+
+namespace AppStoreBackend.Models
 {
     public class App
     {
         public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
 
-        public required string Name { get; set; }
+        // Foreign Key for Category
+        public int CategoryId { get; set; }
 
-        public required string Description { get; set; }
+        // Navigation property for Category
+        public Category Category { get; set; } = null!;
 
-        // Define foreign key and relationship to Category
-        public required Category Category { get; set; }
-
-        // Collection of purchases related to this app
+        // A collection of Purchases of this app
+        [JsonIgnore] // Prevent infinite loop during serialization
         public ICollection<Purchase> Purchases { get; set; } = new List<Purchase>();
     }
 }

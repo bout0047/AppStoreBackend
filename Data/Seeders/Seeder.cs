@@ -4,122 +4,125 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public static class Seeder
+namespace AppStoreBackend.Data.Seeders
 {
-    public static void Seed(AppDbContext context)
+    public static class Seeder
     {
-        Console.WriteLine("Starting database seeding...");
-
-        // Seed Categories
-        if (!context.Categories.Any())
+        public static void Seed(AppDbContext context)
         {
-            var categories = new List<Category>
-            {
-                new Category
-                {
-                    CategoryName = "Games",
-                    IconPath = "path/to/games-icon.png"
-                },
-                new Category
-                {
-                    CategoryName = "Productivity",
-                    IconPath = "path/to/productivity-icon.png"
-                }
-            };
+            Console.WriteLine("Starting database seeding...");
 
-            context.Categories.AddRange(categories);
-            context.SaveChanges();
-            Console.WriteLine("Seeded Categories.");
-        }
-
-        // Seed Apps
-        if (!context.Apps.Any())
-        {
-            var categories = context.Categories.ToList();
-            if (categories.Count >= 2)
+            // Seed Categories
+            if (!context.Categories.Any())
             {
-                var apps = new List<App>
+                var categories = new List<Category>
                 {
-                    new App
+                    new Category
                     {
-                        Name = "Game One",
-                        Description = "An exciting game.",
-                        Category = categories[0] // Set category to Games
+                        CategoryName = "Games",
+                        IconPath = "path/to/games-icon.png"
                     },
-                    new App
+                    new Category
                     {
-                        Name = "Productivity App",
-                        Description = "Boost your productivity.",
-                        Category = categories[1] // Set category to Productivity
+                        CategoryName = "Productivity",
+                        IconPath = "path/to/productivity-icon.png"
                     }
                 };
 
-                context.Apps.AddRange(apps);
+                context.Categories.AddRange(categories);
                 context.SaveChanges();
-                Console.WriteLine("Seeded Apps.");
+                Console.WriteLine("Seeded Categories.");
             }
-            else
-            {
-                Console.WriteLine("Categories not seeded properly. Skipping Apps seeding.");
-            }
-        }
 
-        // Seed Users
-        if (!context.Users.Any())
-        {
-            var users = new List<User>
+            // Seed Apps
+            if (!context.Apps.Any())
             {
-                new User
+                var categories = context.Categories.ToList();
+                if (categories.Count >= 2)
                 {
-                    Username = "user1",
-                    Password = "password1",
-                    Email = "user1@example.com"
-                },
-                new User
-                {
-                    Username = "user2",
-                    Password = "password2",
-                    Email = "user2@example.com"
+                    var apps = new List<App>
+                    {
+                        new App
+                        {
+                            Name = "Game One",
+                            Description = "An exciting game.",
+                            Category = categories[0]
+                        },
+                        new App
+                        {
+                            Name = "Productivity App",
+                            Description = "Boost your productivity.",
+                            Category = categories[1]
+                        }
+                    };
+
+                    context.Apps.AddRange(apps);
+                    context.SaveChanges();
+                    Console.WriteLine("Seeded Apps.");
                 }
-            };
-
-            context.Users.AddRange(users);
-            context.SaveChanges();
-            Console.WriteLine("Seeded Users.");
-        }
-
-        // Seed Purchases
-        if (!context.Purchases.Any())
-        {
-            var users = context.Users.ToList();
-            var apps = context.Apps.ToList();
-
-            if (users.Count >= 2 && apps.Count >= 2)
-            {
-                var purchases = new List<Purchase>
+                else
                 {
-                    new Purchase
+                    Console.WriteLine("Categories not seeded properly. Skipping Apps seeding.");
+                }
+            }
+
+            // Seed Users
+            if (!context.Users.Any())
+            {
+                var users = new List<User>
+                {
+                    new User
                     {
-                        User = users[0],
-                        App = apps[0]
+                        Username = "user1",
+                        Password = "password1",
+                        Email = "user1@example.com"
                     },
-                    new Purchase
+                    new User
                     {
-                        User = users[1],
-                        App = apps[1]
+                        Username = "user2",
+                        Password = "password2",
+                        Email = "user2@example.com"
                     }
                 };
 
-                context.Purchases.AddRange(purchases);
+                context.Users.AddRange(users);
                 context.SaveChanges();
-                Console.WriteLine("Seeded Purchases.");
+                Console.WriteLine("Seeded Users.");
             }
-            else
-            {
-                Console.WriteLine("Users or Apps not seeded properly. Skipping Purchases seeding.");
-            }
-        }
 
-        Console.WriteLine("Database seeding completed.");
+            // Seed Purchases
+            if (!context.Purchases.Any())
+            {
+                var users = context.Users.ToList();
+                var apps = context.Apps.ToList();
+
+                if (users.Count >= 2 && apps.Count >= 2)
+                {
+                    var purchases = new List<Purchase>
+                    {
+                        new Purchase
+                        {
+                            User = users[0],
+                            App = apps[0]
+                        },
+                        new Purchase
+                        {
+                            User = users[1],
+                            App = apps[1]
+                        }
+                    };
+
+                    context.Purchases.AddRange(purchases);
+                    context.SaveChanges();
+                    Console.WriteLine("Seeded Purchases.");
+                }
+                else
+                {
+                    Console.WriteLine("Users or Apps not seeded properly. Skipping Purchases seeding.");
+                }
+            }
+
+            Console.WriteLine("Database seeding completed.");
+        }
     }
 }

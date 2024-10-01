@@ -3,12 +3,18 @@
     public class Purchase
     {
         public int Id { get; set; }
-
         public DateTime PurchaseDate { get; set; } = DateTime.Now;
 
-        // Required relationships
-        public required User User { get; set; }
+        // Foreign Key for User
+        public int UserId { get; set; }
 
-        public required App App { get; set; }
+        // Navigation property for User
+        public User User { get; set; } = null!;
+
+        // Foreign Key for App
+        public int AppId { get; set; }
+
+        // Navigation property for App
+        public App App { get; set; } = null!;
     }
 }
