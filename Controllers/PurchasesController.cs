@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AppStoreBackend.DTOs; // Ensure this is added
 using AppStoreBackend.Data;
+using AppStoreBackend.DTOs; // Add this using directive
 using AppStoreBackend.Models;
 
 namespace AppStoreBackend.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class PurchasesController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -16,19 +16,24 @@ namespace AppStoreBackend.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public ActionResult<List<PurchaseDTO>> GetPurchases()
+        [HttpPost]
+        public IActionResult CreatePurchase([FromBody] PurchaseDTO purchaseDTO)
         {
-            var purchases = _context.Purchases.Select(p => new PurchaseDTO
-            {
-                Id = p.Id,
-                UserId = p.UserId,
-                AppId = p.AppId,
-                PurchaseDate = p.PurchaseDate,
-                Price = p.Price
-            }).ToList();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            return Ok(purchases);
+            var purchase = new Purchase
+            {
+                UserId = purchaseDTO.UserId,
+                AppId = purchaseDTO.AppId,
+                Price = purchaseDTO.Price,
+                PurchaseDate = purchaseDTO.PurchaseDate
+            };
+
+            _context.Purchases.Add(purchase);
+            _context.SaveChanges();
+
+            return Ok(purchase);
         }
     }
 }

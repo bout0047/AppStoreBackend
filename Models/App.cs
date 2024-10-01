@@ -1,14 +1,19 @@
-﻿using AppStoreBackend.Models;
-using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
 
-public class App
+namespace AppStoreBackend.Models
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public decimal Price { get; set; }
-    public int CategoryId { get; set; }
+    public class App
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = null!;
+        public string Description { get; set; } = null!;
+        public decimal Price { get; set; }
 
-    [JsonIgnore] // Prevents circular reference when serializing
-    public Category Category { get; set; }
+        // Foreign key reference to Category
+        public int CategoryId { get; set; }
+        public Category Category { get; set; } = null!;
+
+        // A collection of Purchases associated with this App
+        public ICollection<Purchase> Purchases { get; set; } = new List<Purchase>();
+    }
 }

@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
-public class Category
+namespace AppStoreBackend.Models
 {
-    public int Id { get; set; }
-    public string CategoryName { get; set; }
-    public string IconPath { get; set; }
+    public class Category
+    {
+        public int Id { get; set; }
+        public string CategoryName { get; set; } = null!;
+        public string IconPath { get; set; } = null!;
 
-    [JsonIgnore] // Prevents circular reference when serializing
-    public ICollection<App> Apps { get; set; }
+        // A collection of Apps that belong to this category
+        public ICollection<App> Apps { get; set; } = new List<App>();
+    }
 }
