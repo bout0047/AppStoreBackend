@@ -1,12 +1,8 @@
-﻿using AppStoreBackend.DTOs;
-using AppStoreBackend.Services.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using AppStoreBackend.Data;
+﻿using AppStoreBackend.Data;
+using AppStoreBackend.DTOs;
 using AppStoreBackend.Models;
 
-namespace AppStoreBackend.Services.Implementations
+namespace AppStoreBackend.Services
 {
     public class CategoryService : ICategoryService
     {
