@@ -1,101 +1,60 @@
-﻿using AppStoreBackend.DTOs;
+﻿using AppStoreBackend.Data;
 using AppStoreBackend.Models;
 using AppStoreBackend.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppStoreBackend.Services.Implementations
 {
     public class CategoryService : ICategoryService
     {
-        private readonly List<Category> _categories;
+        private readonly AppDbContext _context;
 
-        public CategoryService()
+        public CategoryService(AppDbContext context)
         {
-            _categories = new List<Category>
-            {
-                new Category { Id = 1, Name = "Games", Description = "All gaming-related apps" },
-                new Category { Id = 2, Name = "Productivity", Description = "Productivity tools and software" }
-            };
+            _context = context;
         }
 
-        public async Task<List<CategoryDTO>> GetAllCategoriesAsync()
+        public async Task<Category?> GetCategoryByIdAsync(int id)
         {
-            var categoryDtos = _categories.Select(category => new CategoryDTO
-            {
-                Id = category.Id,
-                Name = category.Name,
-                Description = category.Description
-            }).ToList();
-
-            return await Task.FromResult(categoryDtos);
+            return await _context.Categories.FindAsync(id);
         }
 
-        public async Task<CategoryDTO?> GetCategoryByIdAsync(int id)
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
-            var category = _categories.FirstOrDefault(c => c.Id == id);
-            if (category == null)
+            return await _context.Categories.ToListAsync();
+        }
+
+        public async Task<Category> CreateCategoryAsync(Category category)
+        {
+            _context.Categories.Add(category);
+            await _context.SaveChangesAsync();
+            return category;
+        }
+
+        public async Task UpdateCategoryAsync(Category category)
+        {
+            var existingCategory = await _context.Categories.FindAsync(category.Id);
+            if (existingCategory != null)
             {
-                return null;
+                existingCategory.Name = category.Name;
+                existingCategory.Description = category.Description;
+                _context.Categories.Update(existingCategory);
+                await _context.SaveChangesAsync();
             }
-
-            return await Task.FromResult(new CategoryDTO
-            {
-                Id = category.Id,
-                Name = category.Name,
-                Description = category.Description
-            });
-        }
-
-        public async Task<CategoryDTO> CreateCategoryAsync(CategoryDTO categoryDto)
-        {
-            var newCategory = new Category
-            {
-                Id = _categories.Max(c => c.Id) + 1,
-                Name = categoryDto.Name,
-                Description = categoryDto.Description
-            };
-
-            _categories.Add(newCategory);
-
-            return await Task.FromResult(new CategoryDTO
-            {
-                Id = newCategory.Id,
-                Name = newCategory.Name,
-                Description = newCategory.Description
-            });
-        }
-
-        public async Task<CategoryDTO?> UpdateCategoryAsync(int id, CategoryDTO categoryDto)
-        {
-            var category = _categories.FirstOrDefault(c => c.Id == id);
-            if (category == null)
-            {
-                return null;
-            }
-
-            category.Name = categoryDto.Name;
-            category.Description = categoryDto.Description;
-
-            return await Task.FromResult(new CategoryDTO
-            {
-                Id = category.Id,
-                Name = category.Name,
-                Description = category.Description
-            });
         }
 
         public async Task<bool> DeleteCategoryAsync(int id)
         {
-            var category = _categories.FirstOrDefault(c => c.Id == id);
-            if (category == null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category != null)
             {
-                return false;
+                _context.Categories.Remove(category);
+                await _context.SaveChangesAsync();
+                return true;
             }
-
-            _categories.Remove(category);
-            return await Task.FromResult(true);
+            return false;
         }
     }
 }

@@ -1,14 +1,15 @@
-﻿using System.Threading.Tasks;
-using AppStoreBackend.DTOs;
+﻿using AppStoreBackend.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AppStoreBackend.Services.Interfaces
 {
     public interface ICategoryService
     {
-        Task<List<CategoryDTO>> GetAllCategoriesAsync();
-        Task<CategoryDTO?> GetCategoryByIdAsync(int id);
-        Task<CategoryDTO> CreateCategoryAsync(CategoryDTO categoryDto);
-        Task<CategoryDTO?> UpdateCategoryAsync(int id, CategoryDTO categoryDto);  // Make sure this signature matches
+        Task<Category?> GetCategoryByIdAsync(int id);
+        Task<IEnumerable<Category>> GetAllCategoriesAsync();
+        Task<Category> CreateCategoryAsync(Category category);
+        Task UpdateCategoryAsync(Category category);
         Task<bool> DeleteCategoryAsync(int id);
     }
 }

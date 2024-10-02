@@ -1,52 +1,66 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AppStoreBackend.Data;
 using AppStoreBackend.Models;
-using AppStoreBackend.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AppStoreBackend.Services.Implementations
 {
     public class UserService : IUserService
     {
-        private readonly List<User> _users = new List<User>();
+        private readonly AppDbContext _context;
 
-        // Retrieve a user by ID asynchronously
+        public UserService(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        // Get user by ID
         public async Task<User?> GetUserByIdAsync(int userId)
         {
-            return await Task.FromResult(_users.FirstOrDefault(u => u.Id == userId));
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
         }
 
-        // Create a new user asynchronously
+        // Create new user
         public async Task<User> CreateUserAsync(User user)
         {
-            _users.Add(user);
-            return await Task.FromResult(user);
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return user; // Return the created user to match IUserService
         }
 
-        // Update an existing user asynchronously
-        public async Task<User?> UpdateUserAsync(User updatedUser)
+        // Update user
+        public async Task UpdateUserAsync(User user)
         {
-            var existingUser = _users.FirstOrDefault(u => u.Id == updatedUser.Id);
+            var existingUser = await _context.Users.FindAsync(user.Id);
             if (existingUser != null)
             {
-                existingUser.Name = updatedUser.Name;
-                existingUser.Email = updatedUser.Email;
-                return await Task.FromResult(existingUser);
+                existingUser.Name = user.Name;
+                existingUser.Email = user.Email;
+                existingUser.Password = user.Password;
+
+                _context.Users.Update(existingUser);
+                await _context.SaveChangesAsync();
             }
-            return null;
         }
 
+        // Get all users
+        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        {
+            return await _context.Users.ToListAsync();
+        }
 
-        // Delete a user by ID asynchronously
+        // Delete user
         public async Task<bool> DeleteUserAsync(int userId)
         {
-            var user = _users.FirstOrDefault(u => u.Id == userId);
+            var user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
-                _users.Remove(user);
-                return await Task.FromResult(true);
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+                return true;
             }
-            return await Task.FromResult(false);
+            return false;
         }
     }
 }

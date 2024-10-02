@@ -1,39 +1,39 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using AppStoreBackend.Models; // Import the correct namespace for the models
+using AppStoreBackend.Models;
 
 namespace AppStoreBackend.Data
 {
     public class AppDbContext : DbContext
     {
+        // Constructor to pass DbContext options
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
+        // DbSets for each model to manage database tables
         public DbSet<App> Apps { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
 
-        // Seed data for the database
+        // Model configurations if required
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Seed Categories
-            modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Games" },
-                new Category { Id = 2, Name = "Utilities" }
-            );
+            // Example configurations: relationships, constraints, etc.
+            modelBuilder.Entity<App>()
+                .HasOne(a => a.Category) // An app has one category
+                .WithMany()              // A category can have many apps
+                .HasForeignKey(a => a.CategoryId); // Foreign key relationship
 
-            // Seed Apps
-            modelBuilder.Entity<App>().HasData(
-                new App { Id = 1, Name = "Chess", Description = "A classic chess game", CategoryId = 1 },
-                new App { Id = 2, Name = "Calculator", Description = "Basic calculator app", CategoryId = 2 }
-            );
+            modelBuilder.Entity<Purchase>()
+                .HasOne(p => p.User)
+                .WithMany()
+                .HasForeignKey(p => p.UserId);
 
-            // Seed Users
-            modelBuilder.Entity<User>().HasData(
-                new User { Id = 1, Username = "User1", Email = "user1@example.com" },
-                new User { Id = 2, Username = "User2", Email = "user2@example.com" }
-            );
+            modelBuilder.Entity<Purchase>()
+                .HasOne(p => p.App)
+                .WithMany()
+                .HasForeignKey(p => p.AppId);
         }
     }
 }

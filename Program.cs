@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using AppStoreBackend.Data;
 using AppStoreBackend.Services;
 using AppStoreBackend.Services.Implementations;
+using AppStoreBackend.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Register your services
 builder.Services.AddScoped<IAppService, AppService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>(); // If you have a category service
+builder.Services.AddScoped<IUserService, UserService>(); // If you have a user service
 
 // Add other services such as controllers
 builder.Services.AddControllers();

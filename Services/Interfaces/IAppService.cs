@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using AppStoreBackend.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using AppStoreBackend.DTOs;
 
 namespace AppStoreBackend.Services
 {
     public interface IAppService
     {
-        Task<IEnumerable<AppDTO>> GetAllAppsAsync();
-        Task<AppDTO> GetAppByIdAsync(int id);
-        Task CreateAppAsync(AppDTO app);
-        Task UpdateAppAsync(int id, AppDTO app);
-        Task DeleteAppAsync(int id);
+        Task<IEnumerable<App>> GetAllAppsAsync();
+        Task<App> GetAppByIdAsync(int id); // Ensure the return type is consistent
+        Task CreateAppAsync(App app);
+        Task UpdateAppAsync(int id, App app);
+        Task<bool> DeleteAppAsync(int id); // Return type should match the implementation
     }
 }

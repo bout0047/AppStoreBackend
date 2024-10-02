@@ -3,7 +3,8 @@
     public class User
     {
         public int Id { get; set; }
-        public string Username { get; set; } = string.Empty; // Ensure non-null value
-        public string Email { get; set; } = string.Empty; // Ensure non-null value
+        public string Name { get; set; } = string.Empty; // Adding the Name property
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty; // Adding the Password property
     }
 }

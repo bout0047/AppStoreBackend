@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AppStoreBackend.Data;
-using AppStoreBackend.DTOs;
+﻿using AppStoreBackend.Data;
 using AppStoreBackend.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AppStoreBackend.Services.Implementations
 {
@@ -17,71 +15,46 @@ namespace AppStoreBackend.Services.Implementations
             _context = context;
         }
 
-        public async Task<IEnumerable<AppDTO>> GetAllAppsAsync()
+        public async Task<IEnumerable<App>> GetAllAppsAsync()
         {
-            return await _context.Apps
-                .Select(app => new AppDTO
-                {
-                    Id = app.Id,
-                    Name = app.Name,
-                    Description = app.Description
-                })
-                .ToListAsync();
+            return await _context.Apps.Include(a => a.Category).ToListAsync();
         }
 
-        public async Task<AppDTO> GetAppByIdAsync(int id)
+        public async Task<App> GetAppByIdAsync(int id)
         {
-            var app = await _context.Apps.FindAsync(id);
-            if (app == null)
-            {
-                return null;
-            }
-
-            return new AppDTO
-            {
-                Id = app.Id,
-                Name = app.Name,
-                Description = app.Description
-            };
+            return await _context.Apps.Include(a => a.Category).FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        public async Task CreateAppAsync(AppDTO appDto)
+        public async Task CreateAppAsync(App app)
         {
-            var app = new App
-            {
-                Name = appDto.Name,
-                Description = appDto.Description
-            };
-
             _context.Apps.Add(app);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAppAsync(int id, AppDTO appDto)
+        public async Task UpdateAppAsync(int id, App app)
         {
-            var app = await _context.Apps.FindAsync(id);
-            if (app == null)
+            var existingApp = await _context.Apps.FindAsync(id);
+            if (existingApp != null)
             {
-                return;
+                existingApp.Name = app.Name;
+                existingApp.Description = app.Description;
+                existingApp.Category = app.Category;
+
+                _context.Apps.Update(existingApp);
+                await _context.SaveChangesAsync();
             }
-
-            app.Name = appDto.Name;
-            app.Description = appDto.Description;
-
-            _context.Apps.Update(app);
-            await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAppAsync(int id)
+        public async Task<bool> DeleteAppAsync(int id)
         {
             var app = await _context.Apps.FindAsync(id);
-            if (app == null)
+            if (app != null)
             {
-                return;
+                _context.Apps.Remove(app);
+                await _context.SaveChangesAsync();
+                return true;
             }
-
-            _context.Apps.Remove(app);
-            await _context.SaveChangesAsync();
+            return false;
         }
     }
 }
