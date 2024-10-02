@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AppStoreBackend.Services.Interfaces;
 using AppStoreBackend.DTOs;
-using AppStoreBackend.Models;
+using AppStoreBackend.Services.Interfaces;
 using System.Threading.Tasks;
 using AppStoreBackend.Services;
 
 namespace AppStoreBackend.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class AppsController : ControllerBase
     {
         private readonly IAppService _appService;
@@ -18,40 +17,46 @@ namespace AppStoreBackend.Controllers
             _appService = appService;
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateApp(int id, [FromBody] AppDTO appDto)
-        {
-            if (appDto == null)
-            {
-                return BadRequest("App data is required");
-            }
-
-            await _appService.UpdateAppAsync(id, appDto);
-            return NoContent();
-        }
-
+        // POST: api/Apps
         [HttpPost]
         public async Task<IActionResult> CreateApp([FromBody] AppDTO appDto)
         {
             if (appDto == null)
             {
-                return BadRequest("App data is required");
+                return BadRequest("App data must be provided");
             }
 
-            await _appService.CreateAppAsync(appDto);
-            return CreatedAtAction(nameof(GetAppById), new { id = appDto.Id }, appDto);
+            await _appService.CreateAppAsync(appDto);  // Removed var assignment as the method returns void
+            return Ok("App created successfully");
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAppById(int id)
+        // PUT: api/Apps/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateApp(int id, [FromBody] AppDTO appDto)
         {
-            var app = await _appService.GetAppByIdAsync(id);
-            if (app == null)
+            if (appDto == null)
             {
-                return NotFound();
+                return BadRequest("App data must be provided");
             }
 
-            return Ok(app);
+            await _appService.UpdateAppAsync(id, appDto);  // Removed var assignment as the method returns void
+            return Ok("App updated successfully");
+        }
+
+        // GET: api/Apps
+        [HttpGet]
+        public async Task<IActionResult> GetAllApps()
+        {
+            var apps = await _appService.GetAllAppsAsync();
+            return Ok(apps);
+        }
+
+        // DELETE: api/Apps/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteApp(int id)
+        {
+            await _appService.DeleteAppAsync(id);  // Removed var assignment as the method returns void
+            return Ok("App deleted successfully");
         }
     }
 }

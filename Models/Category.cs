@@ -3,14 +3,8 @@
     public class Category
     {
         public int Id { get; set; }
-        public required string Name { get; set; }
-        public required string Description { get; set; }
-
-        // Constructor ensures properties are initialized
-        public Category(string name, string description)
-        {
-            Name = name;
-            Description = description;
-        }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string IconPath { get; set; } = string.Empty; // Added IconPath property
     }
 }

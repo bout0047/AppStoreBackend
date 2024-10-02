@@ -1,10 +1,13 @@
 ﻿using System.Threading.Tasks;
 using AppStoreBackend.Models;
 
-public interface IUserService
+namespace AppStoreBackend.Services.Interfaces
 {
-    Task<User> GetUserByIdAsync(int id);
-    Task<User> CreateUserAsync(User user);
-    Task UpdateUserAsync(User user);
-    Task DeleteUserAsync(int id);
+    public interface IUserService
+    {
+        Task<User?> GetUserByIdAsync(int userId);
+        Task<User> CreateUserAsync(User user);
+        Task<User?> UpdateUserAsync(User user);
+        Task<bool> DeleteUserAsync(int userId);
+    }
 }
