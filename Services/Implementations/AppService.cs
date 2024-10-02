@@ -1,12 +1,32 @@
-﻿using AppStoreBackend.Models;
+﻿using AppStoreBackend.Services;
 
-namespace AppStoreBackend.Services.Implementations
+public class AppService : IAppService
 {
-    public class AppService
+    private readonly ApplicationDbContext _context;
+
+    public AppService(ApplicationDbContext context)
     {
-        public string GetCategoryName(Category category)
+        _context = context;
+    }
+
+    public async Task<bool> DeleteAppAsync(int id)
+    {
+        // Find the app by ID
+        var app = await _context.Apps.FindAsync(id);
+
+        // If not found, return false
+        if (app == null)
         {
-            return category.Name; // Updated property reference
+            return false;
         }
+
+        // Remove the app from the context
+        _context.Apps.Remove(app);
+
+        // Save changes asynchronously
+        await _context.SaveChangesAsync();
+
+        // Return true indicating success
+        return true;
     }
 }
