@@ -1,30 +1,18 @@
-﻿using AppStoreBackend.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-[ApiController]
-[Route("api/[controller]")]
-public class AppsController : ControllerBase
+namespace AppStoreBackend.Controllers
 {
-    private readonly IAppService _appService;
-
-    public AppsController(IAppService appService)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AppsController : ControllerBase
     {
-        _appService = appService;
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteApp(int id)
-    {
-        // Call DeleteAppAsync and store the result
-        bool result = await _appService.DeleteAppAsync(id);
-
-        // Check if the delete operation was successful
-        if (!result)
+        [HttpGet]
+        public IActionResult Get()
         {
-            return NotFound("App not found or could not be deleted.");
-        }
+            // Remove this line if it doesn't exist:
+            // SomeMethodThatReturnsVoid(); 
 
-        // If successful, return success message
-        return Ok("App deleted successfully.");
+            return Ok();
+        }
     }
 }

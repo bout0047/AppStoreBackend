@@ -1,12 +1,65 @@
 [
   {
     "ContainingType": "AppStoreBackend.Controllers.AppsController",
-    "Method": "GetApps",
+    "Method": "CreateApp",
+    "RelativePath": "api/Apps",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "appDto",
+        "Type": "AppStoreBackend.DTOs.AppDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AppStoreBackend.Controllers.AppsController",
+    "Method": "GetAllApps",
     "RelativePath": "api/Apps",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AppStoreBackend.Controllers.AppsController",
+    "Method": "UpdateApp",
+    "RelativePath": "api/Apps/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "appDto",
+        "Type": "AppStoreBackend.DTOs.AppDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AppStoreBackend.Controllers.AppsController",
+    "Method": "DeleteApp",
+    "RelativePath": "api/Apps/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

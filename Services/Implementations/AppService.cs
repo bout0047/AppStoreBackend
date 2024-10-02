@@ -1,32 +1,86 @@
-﻿using AppStoreBackend.Services;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AppStoreBackend.Data;
+using AppStoreBackend.DTOs;
+using Microsoft.EntityFrameworkCore;
 
-public class AppService : IAppService
+namespace AppStoreBackend.Services.Implementations
 {
-    private readonly ApplicationDbContext _context;
-
-    public AppService(ApplicationDbContext context)
+    public class AppService : IAppService
     {
-        _context = context;
-    }
+        private readonly AppDbContext _context;
 
-    public async Task<bool> DeleteAppAsync(int id)
-    {
-        // Find the app by ID
-        var app = await _context.Apps.FindAsync(id);
-
-        // If not found, return false
-        if (app == null)
+        public AppService(AppDbContext context)
         {
-            return false;
+            _context = context;
         }
 
-        // Remove the app from the context
-        _context.Apps.Remove(app);
+        public async Task<IEnumerable<AppDTO>> GetAllAppsAsync()
+        {
+            return await _context.Apps
+                .Select(app => new AppDTO
+                {
+                    Id = app.Id,
+                    Name = app.Name,
+                    Description = app.Description
+                })
+                .ToListAsync();
+        }
 
-        // Save changes asynchronously
-        await _context.SaveChangesAsync();
+        public async Task<AppDTO> GetAppByIdAsync(int id)
+        {
+            var app = await _context.Apps.FindAsync(id);
+            if (app == null)
+            {
+                return null;
+            }
 
-        // Return true indicating success
-        return true;
+            return new AppDTO
+            {
+                Id = app.Id,
+                Name = app.Name,
+                Description = app.Description
+            };
+        }
+
+        public async Task CreateAppAsync(AppDTO appDto)
+        {
+            var app = new App
+            {
+                Name = appDto.Name,
+                Description = appDto.Description
+            };
+
+            _context.Apps.Add(app);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAppAsync(int id, AppDTO appDto)
+        {
+            var app = await _context.Apps.FindAsync(id);
+            if (app == null)
+            {
+                return;
+            }
+
+            app.Name = appDto.Name;
+            app.Description = appDto.Description;
+
+            _context.Apps.Update(app);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAppAsync(int id)
+        {
+            var app = await _context.Apps.FindAsync(id);
+            if (app == null)
+            {
+                return;
+            }
+
+            _context.Apps.Remove(app);
+            await _context.SaveChangesAsync();
+        }
     }
 }

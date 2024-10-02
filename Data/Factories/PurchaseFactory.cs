@@ -4,12 +4,15 @@ namespace AppStoreBackend.Data.Factories
 {
     public static class PurchaseFactory
     {
-        public static Purchase CreatePurchase(User? user, App? app)
+        public static Purchase CreateNewPurchase(int userId, int appId, DateTime purchaseDate)
         {
             return new Purchase
             {
-                User = user ?? throw new ArgumentNullException(nameof(user)),
-                App = app ?? throw new ArgumentNullException(nameof(app))
+                UserId = userId,
+                AppId = appId,
+                PurchaseDate = purchaseDate,
+                User = new User(), // Add appropriate User object if needed
+                App = new App() // Add appropriate App object if needed
             };
         }
     }

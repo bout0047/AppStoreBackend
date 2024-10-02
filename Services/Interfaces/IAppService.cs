@@ -1,4 +1,6 @@
-﻿using AppStoreBackend.DTOs;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AppStoreBackend.DTOs;
 
 namespace AppStoreBackend.Services
 {
@@ -6,8 +8,8 @@ namespace AppStoreBackend.Services
     {
         Task<IEnumerable<AppDTO>> GetAllAppsAsync();
         Task<AppDTO> GetAppByIdAsync(int id);
-        Task CreateAppAsync(AppDTO appDto);
-        Task UpdateAppAsync(int id, AppDTO appDto);
+        Task CreateAppAsync(AppDTO app);
+        Task UpdateAppAsync(int id, AppDTO app);
         Task DeleteAppAsync(int id);
     }
 }

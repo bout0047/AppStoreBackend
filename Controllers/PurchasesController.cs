@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AppStoreBackend.Data;
-using AppStoreBackend.Models;
-using System.Collections.Generic;
-using System.Linq;
+using AppStoreBackend.Models; // Use Models for all entities like Purchase
 
 namespace AppStoreBackend.Controllers
 {
@@ -17,11 +14,26 @@ namespace AppStoreBackend.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public IActionResult GetPurchases()
+        [HttpPost]
+        public IActionResult CreatePurchase(Purchase purchase)
         {
-            List<Purchase> purchases = _context.Purchases.ToList();
-            return Ok(purchases);
+            // Explicitly using the correct namespace
+            _context.Purchases.Add(purchase);
+            _context.SaveChanges();
+
+            return Ok(purchase);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetPurchase(int id)
+        {
+            var purchase = _context.Purchases.Find(id);
+            if (purchase == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(purchase);
         }
     }
 }
