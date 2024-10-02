@@ -1,29 +1,11 @@
-﻿using IdentityServer4.Models;
-using System.Collections.Generic;
-
-namespace AppStoreBackend.Config
+﻿namespace AppStoreBackend.Config
 {
-    public static class IdentityServerConfig
+    public class IdentityServerConfig
     {
-        public static IEnumerable<ApiScope> ApiScopes =>
-            new List<ApiScope>
-            {
-                new ApiScope("appstore_api", "App Store API")
-            };
+        public static string IssuerUri { get; set; } = "https://localhost:5001";
+        public static string ApiName { get; set; } = "appstore_api";
+        public static string ApiSecret { get; set; } = "appstore_secret";
 
-        public static IEnumerable<Client> Clients =>
-            new List<Client>
-            {
-                new Client
-                {
-                    ClientId = "client",
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-                    AllowedScopes = { "appstore_api" }
-                }
-            };
+        // Other identity server configuration settings...
     }
 }
