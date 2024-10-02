@@ -1,23 +1,16 @@
-﻿using System;
-using AppStoreBackend.Data; // Added using statement to reference ApplicationData
+﻿using AppStoreBackend.Models;
 
-namespace AppStoreBackend.Models
+namespace AppStoreBackend.Data.Factories
 {
-    public class PurchaseData
+    public static class PurchaseFactory
     {
-        public int Id { get; set; }
-
-        // Reference to the user who made the purchase
-        public User User { get; set; } // Consider initializing to avoid null warnings
-        public int UserId { get; set; } // Added foreign key property for User
-
-        // Reference to the application being purchased
-        public ApplicationData App { get; set; } // Consider initializing to avoid null warnings
-        public int AppId { get; set; } // Added foreign key property for App
-
-        // Additional properties
-        public DateTime PurchaseDate { get; set; } = DateTime.Now;
-        public decimal Price { get; set; }
-        public string PaymentMethod { get; set; } = string.Empty;
+        public static Purchase CreatePurchase(User? user, App? app)
+        {
+            return new Purchase
+            {
+                User = user ?? throw new ArgumentNullException(nameof(user)),
+                App = app ?? throw new ArgumentNullException(nameof(app))
+            };
+        }
     }
 }

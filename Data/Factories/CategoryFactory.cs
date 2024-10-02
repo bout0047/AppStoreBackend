@@ -4,12 +4,13 @@ namespace AppStoreBackend.Data.Factories
 {
     public static class CategoryFactory
     {
-        public static Category Create(string name, string iconPath)
+        public static Category CreateCategory(string name, string description, string? iconPath = null)
         {
             return new Category
             {
-                CategoryName = name,
-                IconPath = iconPath
+                Name = name,
+                Description = description,
+                IconPath = iconPath  // Added this line to match the updated model
             };
         }
     }

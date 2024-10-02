@@ -1,8 +1,9 @@
-﻿// File: Controllers/AppsController.cs
-using Microsoft.AspNetCore.Mvc;
-using AppStoreBackend.Services;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using AppStoreBackend.Services.Interfaces;
+using AppStoreBackend.DTOs;
 using AppStoreBackend.Models;
+using System.Threading.Tasks;
+using AppStoreBackend.Services;
 
 namespace AppStoreBackend.Controllers
 {
@@ -17,41 +18,40 @@ namespace AppStoreBackend.Controllers
             _appService = appService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateApp(int id, [FromBody] AppDTO appDto)
         {
-            var apps = await _appService.GetAllAppsAsync();
-            return Ok(apps);
-        }
+            if (appDto == null)
+            {
+                return BadRequest("App data is required");
+            }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var app = await _appService.GetAppByIdAsync(id);
-            if (app == null) return NotFound();
-            return Ok(app);
+            await _appService.UpdateAppAsync(id, appDto);
+            return NoContent();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(App app)
+        public async Task<IActionResult> CreateApp([FromBody] AppDTO appDto)
         {
-            var createdApp = await _appService.CreateAppAsync(app);
-            return CreatedAtAction(nameof(GetById), new { id = createdApp.Id }, createdApp);
+            if (appDto == null)
+            {
+                return BadRequest("App data is required");
+            }
+
+            await _appService.CreateAppAsync(appDto);
+            return CreatedAtAction(nameof(GetAppById), new { id = appDto.Id }, appDto);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, App app)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAppById(int id)
         {
-            if (id != app.Id) return BadRequest();
-            await _appService.UpdateAppAsync(app);
-            return NoContent();
-        }
+            var app = await _appService.GetAppByIdAsync(id);
+            if (app == null)
+            {
+                return NotFound();
+            }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await _appService.DeleteAppAsync(id);
-            return NoContent();
+            return Ok(app);
         }
     }
 }

@@ -1,38 +1,30 @@
-﻿using AppStoreBackend.Data;
-using AppStoreBackend.DTOs;
+﻿using AppStoreBackend.DTOs;
 using AppStoreBackend.Models;
 using AppStoreBackend.Services.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppStoreBackend.Services.Implementations
 {
     public class CategoryService : ICategoryService
     {
-        private readonly AppDbContext _context;
+        private readonly List<Category> _categories;
 
-        public CategoryService(AppDbContext context)
+        public CategoryService()
         {
-            _context = context;
-        }
-
-        public async Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync()
-        {
-            return _context.Categories.Select(category => new CategoryDTO
+            _categories = new List<Category>
             {
-                Id = category.Id,
-                Name = category.Name,
-                Description = category.Description
-            }).ToList();
+                new Category("Games", "All types of games"),
+                new Category("Productivity", "Productivity tools and apps")
+            };
         }
 
         public async Task<CategoryDTO> GetCategoryByIdAsync(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
+            var category = _categories.Find(c => c.Id == id);
             if (category == null)
             {
-                return null;
+                throw new KeyNotFoundException($"Category with ID {id} not found.");
             }
 
             return new CategoryDTO
@@ -41,52 +33,6 @@ namespace AppStoreBackend.Services.Implementations
                 Name = category.Name,
                 Description = category.Description
             };
-        }
-
-        public async Task<CategoryDTO> CreateCategoryAsync(CategoryDTO categoryDTO)
-        {
-            var category = new Category
-            {
-                Name = categoryDTO.Name,
-                Description = categoryDTO.Description
-            };
-
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
-
-            categoryDTO.Id = category.Id;
-            return categoryDTO;
-        }
-
-        public async Task<CategoryDTO> UpdateCategoryAsync(int id, CategoryDTO categoryDTO)
-        {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return null;
-            }
-
-            category.Name = categoryDTO.Name;
-            category.Description = categoryDTO.Description;
-
-            _context.Categories.Update(category);
-            await _context.SaveChangesAsync();
-
-            return categoryDTO;
-        }
-
-        public async Task<bool> DeleteCategoryAsync(int id)
-        {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return false;
-            }
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-
-            return true;
         }
     }
 }
