@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using AppStoreBackend.DTOs;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using AppStoreBackend.DTOs;
 
 namespace AppStoreBackend.Services.Interfaces
 {
@@ -8,8 +8,8 @@ namespace AppStoreBackend.Services.Interfaces
     {
         Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync();
         Task<CategoryDTO> GetCategoryByIdAsync(int id);
-        Task CreateCategoryAsync(CategoryDTO categoryDto);
-        Task UpdateCategoryAsync(int id, CategoryDTO categoryDto);
-        Task DeleteCategoryAsync(int id);
+        Task<CategoryDTO> CreateCategoryAsync(CategoryDTO categoryDTO);
+        Task<CategoryDTO> UpdateCategoryAsync(int id, CategoryDTO categoryDTO);
+        Task<bool> DeleteCategoryAsync(int id);
     }
 }

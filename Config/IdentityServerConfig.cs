@@ -1,11 +1,10 @@
 ﻿namespace AppStoreBackend.Config
 {
-    public class IdentityServerConfig
+    public static class IdentityServerConfig
     {
-        public static string IssuerUri { get; set; } = "https://localhost:5001";
-        public static string ApiName { get; set; } = "appstore_api";
-        public static string ApiSecret { get; set; } = "appstore_secret";
-
-        // Other identity server configuration settings...
+        // Your configuration properties, e.g., ClientId, IssuerUri, etc.
+        public static string IssuerUri => "https://your-identityserver-uri.com";
+        public static string ClientId => "your-client-id";
+        public static string ClientSecret => "your-client-secret";
     }
 }
