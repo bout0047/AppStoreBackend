@@ -1,47 +1,65 @@
-// Program.cs
-
-using AppStoreBackend.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using AppStoreBackend.Data; // Reference your Data folder
+using AppStoreBackend.Services; // Custom services
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-// Add DbContext with SQL Server configuration
+// Configure Database Context with Connection String
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
 
-// Add controllers
+// Add Controllers
 builder.Services.AddControllers();
 
-// Configure CORS policy
-builder.Services.AddCors(options =>
+// Configure Swagger
+builder.Services.AddSwaggerGen(c =>
 {
-    options.AddPolicy("AllowAllOrigins", policyBuilder =>
+    c.SwaggerDoc("v1", new OpenApiInfo
     {
-        policyBuilder.AllowAnyOrigin()
-                     .AllowAnyMethod()
-                     .AllowAnyHeader();
+        Title = "App Store API",
+        Version = "v1",
+        Description = "API for managing the App Store backend"
     });
 });
 
-// Configure Swagger (optional, helpful for API testing)
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// Add Custom Application Services (Dependency Injection)
+builder.Services.AddScoped<IAppService, AppService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+// Enable CORS (Cross-Origin Resource Sharing)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "App Store API v1");
+    });
 }
 
 app.UseHttpsRedirection();
 
-// Use CORS
+app.UseRouting();
+
+// Enable CORS
 app.UseCors("AllowAllOrigins");
 
 app.UseAuthorization();
