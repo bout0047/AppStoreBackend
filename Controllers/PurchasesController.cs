@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AppStoreBackend.Models; // Use Models for all entities like Purchase
+using AppStoreBackend.Data; // Import for AppDbContext
+using AppStoreBackend.Models; // Import models like Purchase
 
 namespace AppStoreBackend.Controllers
 {
@@ -11,13 +12,12 @@ namespace AppStoreBackend.Controllers
 
         public PurchasesController(AppDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         [HttpPost]
         public IActionResult CreatePurchase(Purchase purchase)
         {
-            // Explicitly using the correct namespace
             _context.Purchases.Add(purchase);
             _context.SaveChanges();
 

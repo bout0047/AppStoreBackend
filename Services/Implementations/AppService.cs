@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppStoreBackend.Data;
 using AppStoreBackend.DTOs;
+using AppStoreBackend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppStoreBackend.Services.Implementations

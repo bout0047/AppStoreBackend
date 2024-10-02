@@ -1,18 +1,16 @@
-﻿namespace AppStoreBackend.Data.Factories
-{
-    using AppStoreBackend.DTOs;
-    using AppStoreBackend.Models;
+﻿using AppStoreBackend.Models;
 
-    public class CategoryFactory
+namespace AppStoreBackend.Data.Factories
+{
+    public static class CategoryFactory
     {
-        public static Category CreateCategory(CategoryDTO categoryDto)
+        public static Category CreateNewCategory(string name, string description, string iconPath)
         {
             return new Category
             {
-                Id = categoryDto.Id,
-                Name = categoryDto.Name,
-                Description = categoryDto.Description,
-                IconPath = categoryDto.IconPath // Add IconPath here
+                Name = name,
+                Description = description, // Correct usage of Description property
+                IconPath = iconPath // Correct usage of IconPath property
             };
         }
     }

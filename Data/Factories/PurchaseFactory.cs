@@ -11,8 +11,8 @@ namespace AppStoreBackend.Data.Factories
                 UserId = userId,
                 AppId = appId,
                 PurchaseDate = purchaseDate,
-                User = new User(), // Add appropriate User object if needed
-                App = new App() // Add appropriate App object if needed
+                User = new User(), // Correct reference
+                App = new App() // Correct reference
             };
         }
     }
