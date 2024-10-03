@@ -1,13 +1,23 @@
-﻿namespace AppStoreBackend.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace AppStoreBackend.Models
 {
     public class App
     {
+        [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int CategoryId { get; set; }
 
-        // Modify the navigation properties to be nullable
-        public Category? Category { get; set; }
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        public string Description { get; set; }
+
+        [ForeignKey("Category")]
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
+
+        public ICollection<Purchase> Purchases { get; set; }
     }
 }

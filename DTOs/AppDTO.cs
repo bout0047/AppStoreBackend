@@ -3,7 +3,9 @@
     public class AppDTO
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty; // Ensure non-null value is always assigned
-        public string Description { get; set; } = string.Empty; // Ensure non-null value is always assigned
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
     }
 }
