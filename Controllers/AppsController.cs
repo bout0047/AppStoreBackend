@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using AppStoreBackend.Data;
-using AppStoreBackend.Models;
+﻿using AppStoreBackend.Data;
 using AppStoreBackend.DTOs;
+using AppStoreBackend.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppStoreBackend.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class AppsController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -17,11 +17,10 @@ namespace AppStoreBackend.Controllers
             _context = context;
         }
 
-        // GET: api/Apps
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppDTO>>> GetApps()
         {
-            return await _context.Apps
+            var apps = await _context.Apps
                 .Include(a => a.Category)
                 .Select(a => new AppDTO
                 {
@@ -32,9 +31,10 @@ namespace AppStoreBackend.Controllers
                     CategoryName = a.Category.Name
                 })
                 .ToListAsync();
+
+            return Ok(apps);
         }
 
-        // GET: api/Apps/5
         [HttpGet("{id}")]
         public async Task<ActionResult<AppDTO>> GetApp(int id)
         {
@@ -56,12 +56,27 @@ namespace AppStoreBackend.Controllers
                 return NotFound();
             }
 
-            return app;
+            return Ok(app);
         }
 
-        // PUT: api/Apps/5
+        [HttpPost]
+        public async Task<ActionResult<App>> CreateApp(AppDTO appDTO)
+        {
+            var app = new App
+            {
+                Name = appDTO.Name,
+                Description = appDTO.Description,
+                CategoryId = appDTO.CategoryId
+            };
+
+            _context.Apps.Add(app);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetApp), new { id = app.Id }, appDTO);
+        }
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutApp(int id, AppDTO appDTO)
+        public async Task<IActionResult> UpdateApp(int id, AppDTO appDTO)
         {
             if (id != appDTO.Id)
             {
@@ -77,6 +92,8 @@ namespace AppStoreBackend.Controllers
             app.Name = appDTO.Name;
             app.Description = appDTO.Description;
             app.CategoryId = appDTO.CategoryId;
+
+            _context.Entry(app).State = EntityState.Modified;
 
             try
             {
@@ -97,26 +114,6 @@ namespace AppStoreBackend.Controllers
             return NoContent();
         }
 
-        // POST: api/Apps
-        [HttpPost]
-        public async Task<ActionResult<AppDTO>> PostApp(AppDTO appDTO)
-        {
-            var app = new App
-            {
-                Name = appDTO.Name,
-                Description = appDTO.Description,
-                CategoryId = appDTO.CategoryId
-            };
-
-            _context.Apps.Add(app);
-            await _context.SaveChangesAsync();
-
-            appDTO.Id = app.Id;
-
-            return CreatedAtAction(nameof(GetApp), new { id = app.Id }, appDTO);
-        }
-
-        // DELETE: api/Apps/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteApp(int id)
         {
