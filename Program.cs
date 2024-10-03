@@ -1,32 +1,36 @@
-using Microsoft.EntityFrameworkCore;
-using AppStoreBackend.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using AppStoreBackend.Services.Implementations;
-using AppStoreBackend.Services;
+using Microsoft.EntityFrameworkCore;
+using AppStoreBackend.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add CORS policy to allow your Flutter app to access the backend
+// Add CORS policy to allow access from specific domains (such as Flutter frontend)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFlutterApp",
-        builder => builder
-            .AllowAnyOrigin()  // Allow any origin (use specific domains in production)
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+    options.AddPolicy("AllowFlutterApp", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
 });
+
+// Add Swagger
+builder.Services.AddSwaggerGen();
+
+// Add database context for SQL Server
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configure Authentication Middleware (JWT)
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = "https://localhost:5001"; // Adjust this to your authority if needed
-        options.Audience = "your-api-audience"; // Update the audience to match your backend configuration
+        options.Authority = "https://your-authority-url"; // Adjust this to your authority if needed
+        options.Audience = "your-api-audience"; // Update audience value
         options.RequireHttpsMetadata = false;
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -37,29 +41,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// Add services to the DI container
-builder.Services.AddScoped<IAppService, AppService>();
+// Add controllers
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
+// Use Swagger
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "AppStoreBackend API v1");
+    });
+}
+
 // Use CORS
 app.UseCors("AllowFlutterApp");
 
-// Configure the HTTP request pipeline
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-
-app.UseHttpsRedirection();
-app.UseRouting();
-app.UseAuthentication();  // Use Authentication
+// Use Authentication and Authorization
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+app.MapControllers();
 
 app.Run();
