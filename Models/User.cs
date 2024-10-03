@@ -3,8 +3,9 @@
     public class User
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty; // Adding the Name property
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty; // Adding the Password property
+        public string Username { get; set; }
+        public string Name { get; set; }   // Add this if missing
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }

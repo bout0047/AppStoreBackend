@@ -1,39 +1,50 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using AppStoreBackend.Models;
+using AppStoreBackend.Models;  // Add this to reference the User model
 
 namespace AppStoreBackend.Data
 {
     public class AppDbContext : DbContext
     {
-        // Constructor to pass DbContext options
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
 
-        // DbSets for each model to manage database tables
+        // Define DbSet properties for each model in your application
         public DbSet<App> Apps { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
 
-        // Model configurations if required
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Example configurations: relationships, constraints, etc.
-            modelBuilder.Entity<App>()
-                .HasOne(a => a.Category) // An app has one category
-                .WithMany()              // A category can have many apps
-                .HasForeignKey(a => a.CategoryId); // Foreign key relationship
+            // Seeding Categories
+            modelBuilder.Entity<Category>().HasData(
+                new Category { Id = 1, Name = "Games" },
+                new Category { Id = 2, Name = "Productivity" },
+                new Category { Id = 3, Name = "Education" }
+            );
 
-            modelBuilder.Entity<Purchase>()
-                .HasOne(p => p.User)
-                .WithMany()
-                .HasForeignKey(p => p.UserId);
+            // Seeding Apps
+            modelBuilder.Entity<App>().HasData(
+                new App { Id = 1, Name = "Super Fun Game", Description = "An amazing game that is fun to play!", CategoryId = 1 },
+                new App { Id = 2, Name = "Work Organizer", Description = "Boost your productivity with this organizer app.", CategoryId = 2 },
+                new App { Id = 3, Name = "Learn Spanish", Description = "An educational app for learning Spanish.", CategoryId = 3 }
+            );
 
-            modelBuilder.Entity<Purchase>()
-                .HasOne(p => p.App)
-                .WithMany()
-                .HasForeignKey(p => p.AppId);
+            // Seeding Users - Ensure all required fields, such as Name, are provided
+            modelBuilder.Entity<User>().HasData(
+                new User { Id = 1, Username = "john_doe", Name = "John Doe", Email = "john@example.com", Password = "hashed_password_here" },
+                new User { Id = 2, Username = "jane_smith", Name = "Jane Smith", Email = "jane@example.com", Password = "hashed_password_here" }
+            );
+
+            // Seeding Purchases
+            modelBuilder.Entity<Purchase>().HasData(
+                new Purchase { Id = 1, UserId = 1, AppId = 1, PurchaseDate = new DateTime(2023, 1, 1) },
+                new Purchase { Id = 2, UserId = 2, AppId = 2, PurchaseDate = new DateTime(2023, 2, 15) }
+            );
         }
+
     }
 }

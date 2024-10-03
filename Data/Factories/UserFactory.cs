@@ -4,13 +4,14 @@ namespace AppStoreBackend.Data.Factories
 {
     public static class UserFactory
     {
-        public static User CreateDefaultUser()
+        public static User CreateUser(string username, string email, string name, string password)
         {
             return new User
             {
-                Name = "Default Name",
-                Email = "default@example.com",
-                Password = "defaultpassword" // Adding the Password property
+                Username = username,
+                Email = email,
+                Name = name,
+                Password = password
             };
         }
     }
