@@ -13,8 +13,13 @@ namespace AppStoreBackend.Models
 
         public string Description { get; set; }
 
-        public string IconPath { get; set; }
 
+        public ICollection<App> Apps { get; set; }
+
+        public ICollection<App> Apps { get; set; }
+        public ICollection<App> Apps { get; set; }
+        public ICollection<App> Apps { get; set; }
+        public ICollection<App> Apps { get; set; }
         public ICollection<App> Apps { get; set; }
     }
 }
