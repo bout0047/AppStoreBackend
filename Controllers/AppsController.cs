@@ -18,7 +18,7 @@ namespace AppStoreBackend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppDTO>>> GetApps()
+        public async Task<ActionResult<IEnumerable<AsdfsdfsdfppDTO>>> GetApps()
         {
             var apps = await _context.Apps
                 .Include(a => a.Category)
